@@ -1,0 +1,13 @@
+device: auto
+epochs: 30
+gamma: 0.99
+hidden_sizes: [64, 64]
+lam: 0.97
+policy_learning_rate: 0.0003
+render: false
+steps_per_epoch: 4000
+target_kl: 0.01
+train_policy_iterations: 80
+train_value_iterations: 80
+value_function_learning_rate: 0.001
+clip_ratio: 0.2
