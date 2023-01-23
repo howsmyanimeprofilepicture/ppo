@@ -35,47 +35,31 @@ $$
 * It is define as follow :
 
 $$
-L(s,a,\theta_k,\theta) 
-= - \min\left(
-\frac{\pi_{\theta}(a|s)}{\pi_{\theta_k}(a|s)}  A^{\pi_{\theta_k}}(s,a), \;\;
-\text{clip}\left(\frac{\pi_{\theta}(a|s)}{\pi_{\theta_k}(a|s)}, 1 - \epsilon, 1+\epsilon \right) A^{\pi_{\theta_k}}(s,a)
-\right) \\
-
-= - \min\left(
-\frac{\pi_{\theta}(a|s)}{\pi_{\theta_k}(a|s)}  A^{\pi_{\theta_k}}(s,a), \;\;
-g(\epsilon, A^{\pi_{\theta_k}}(s,a))
-\right) \\
+\begin{align} L(s,a,\theta_k,\theta) &= -\min\left( \frac{\pi_{\theta}(a|s)}{\pi_{\theta_k}(a|s)}  A^{\pi_{\theta_k}}(s,a), \text{clip}\left(\frac{\pi_{\theta}(a|s)}{\pi_{\theta_k}(a|s)}, 1 - \epsilon, 1+\epsilon \right) A^{\pi_{\theta_k}}(s,a)\right)\\
+&= -\min\left(\frac{\pi_{\theta}(a|s)}{\pi_{\theta_k}(a|s)}  A^{\pi_{\theta_k}}(s,a),~g(\epsilon,~ A^{\pi_{\theta_k}}(s,a))\right) \end{align}
 $$
 
 * where $\pi_\theta$ is our new policy, and $\pi_{\theta_k}$ is the old policy. 
 
 $$
-\Large
-g(\epsilon, A) = \left\{
-    \begin{array}{ll}
+g(\epsilon, A) = \begin{cases}
     (1 + \epsilon) A & A \geq 0 \\
-    (1 - \epsilon) A & A < 0.
-    \end{array}
-    \right.
+    (1 - \epsilon) A & A < 0
+   \end{cases}
 $$
 
 * So we can decompose our loss function as follow :
 
 $$
-\Large
 -L(s,a,\theta_k,\theta) = \begin{cases}
-
 \min\left[
 \frac{\pi_{\theta}(a|s)}{\pi_{\theta_k}(a|s)}, (1 + \epsilon)
 \right] \times  A^{\pi_{\theta_k}}(s,a) & _{\text{if}~~A^{\pi_{\theta_k}} \ge 0}
 \\
-
 \max\left[
 \frac{\pi_{\theta}(a|s)}{\pi_{\theta_k}(a|s)}, (1 - \epsilon)
 \right] \times  A^{\pi_{\theta_k}}(s,a) 
-& _{\text{if}~~A^{\pi_{\theta_k}} < 0}
-
-\end{cases}
+& _{\text{if}~~A^{\pi_{\theta_k}} < 0} \end{cases}
 $$
 
 * In this loss function equation, there's a kind of **regularization** for new policy ($\pi_\theta$).
@@ -104,13 +88,11 @@ $$
 * In our example code, our advantage estimate is computed as follow:
 
 $$
-\large
 \delta_t = \underbrace{r_t + \gamma V_\phi(s_{t+1})}_{\text{the estimated value of}~ s_t} - 
 \underbrace{V_\phi(s_t)}_\text{value func as baseline} \\
 $$
 
 $$
-\Large
 \hat A_t = \sum_{i=t}^T  (\gamma \lambda )^{T-i}\delta_i
 $$
 
@@ -125,8 +107,6 @@ $$
 * Our reward-to-go estimate is computed as follow:
 
 $$
-\Large
-
 \hat R_t = \sum_{i=t}^T \gamma^{T-i} \underbrace{r_i}_\text{reward}
 $$
 
